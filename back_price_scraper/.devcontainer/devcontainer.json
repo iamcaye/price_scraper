@@ -1,0 +1,18 @@
+{
+  "name": "back_price_scraper",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.colorTheme": "One Dark Pro Darker"
+      },
+      "extensions": ["Prisma.prisma"]
+    }
+  },
+  "forwardPorts": [4000],
+  "remoteUser": "node",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "npm install"
+}

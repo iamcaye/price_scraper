@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Marca {
+  id        Int         @id @default(autoincrement())
+  nombre    String      @db.VarChar(200)
+  productos Producto[]
+  fecha_creacion  DateTime @default(now())
+}
+
+model Producto {
+  id              Int     @id @default(autoincrement())
+  nombre          String  @db.VarChar(255)
+  marca           Marca   @relation(fields:[id_marca], references: [id])
+  id_marca        Int
+  ean             String  @db.VarChar(255)
+  // catalogos       ProductosCatalogos[]
+  campos          ValorCampoCatalogo[]
+  id_catalogo     Int
+  catalogo        Catalogo @relation(fields:[id_catalogo], references: [id])
+  fecha_creacion  DateTime @default(now())
+}
+
+model Catalogo {
+  id        Int         @id @default(autoincrement())
+  nombre    String      @db.VarChar(200)
+  productos Producto[]
+  campos    CamposCatalogo[]
+  fecha_creacion  DateTime @default(now())
+}
+
+model CamposCatalogo {
+  id          Int         @id @default(autoincrement())
+  nombre      String      @db.VarChar(200)
+  id_catalogo Int
+  catalogo    Catalogo    @relation(fields: [id_catalogo], references: [id])
+  campos      ValorCampoCatalogo[]
+}
+
+model ValorCampoCatalogo {
+  id          Int         @id @default(autoincrement())
+  valor       String      @db.VarChar(200)
+  campo       CamposCatalogo @relation(fields: [id_campo], references: [id])
+  id_campo    Int
+  producto    Producto @relation(fields: [id_producto], references: [id])
+  id_producto Int
+}
+
+
+// model ProductosCatalogos {
+  // producto    Producto  @relation(fields:[id_producto], references: [id])
+  // id_producto Int
+  // catalogo    Catalogo  @relation(fields:[id_catalogo], references: [id])
+  // id_catalogo Int
+
+  // @@id([id_catalogo, id_producto])
+// }
